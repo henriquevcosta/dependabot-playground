@@ -12,6 +12,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+              # Gradle build
+
       - name: Install Java
         uses: actions/setup-java@v2
         with:
@@ -22,22 +24,55 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
         
+              # Generate CycloneDX
+
+      # - name: Run gradlew cyclonedxBom task
+      #   uses: gradle/gradle-build-action@v2
+      #   with:
+      #     build-root-directory: .
+      #     arguments: cyclonedxBom
+
+      # - name: Upload application
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: cyclonesbom
+      #     path: ./bom.json
+      #     retention-days: 3
+  
+        # Generate gradle lockfile for syft to parse
 
       - name: Run gradlew cyclonedxBom task
         uses: gradle/gradle-build-action@v2
         with:
           build-root-directory: .
-          arguments: cyclonedxBom
+          arguments: dependencies --write-locks
 
-      - name: Upload application
-        uses: actions/upload-artifact@v2
+      - name: run syft
+        uses: anchore/sbom-action@v0
         with:
-          name: cyclonesbom
-          path: ./bom.json
-          retention-days: 3
-      
-      - name: SBOM upload   
+          path: .
+          output-file: "./sbom-build.spdx.json"
+          upload-artifact: true
+          upload-artifact-retention: 30
+          
+      - name: SBOM upload 
         uses: advanced-security/spdx-dependency-submission-action@v0.0.1
         with:
-          filePath: "./"
-          filePattern: "bom.json"
+          filePath: "./sbom-build.spdx.json"
+  
+
+      # - name: SBOM upload   
+      #   uses: advanced-security/spdx-dependency-submission-action@v0.0.1
+      #   with:
+      #     filePath: "./"
+      #     filePattern: "bom.json"
+      #     - name: Generate SBOM
+      #     run: | 
+      #       curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
+      #       chmod +x $RUNNER_TEMP/sbom-tool
+      #       $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn ${{ github.repository }} -pv 1.0.0 -ps OwnerName -nsb https://sbom.mycompany.com -V Verbose
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: sbom
+      #     path: _manifest/spdx_2.2
+          

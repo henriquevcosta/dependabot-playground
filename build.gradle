@@ -2,8 +2,14 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.cyclonedx.bom' version '1.7.2'
 }
+
+
+// To generate lock files for spdx dependency analysis
+dependencyLocking {
+    lockAllConfigurations()
+}
+
 
 group = 'com.henrique'
 version = '0.0.1-SNAPSHOT'
@@ -27,11 +33,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.testcontainers:junit-jupiter'
-}
-
-
-tasks.cyclonedxBom {
-    setDestination(project.file("."))
 }
 
 tasks.named('test') {
