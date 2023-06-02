@@ -47,15 +47,27 @@ jobs:
           build-root-directory: .
           arguments: dependencies --write-locks
 
-          # See https://github.com/marketplace/actions/anchore-sbom-action
-      - name: Run syft to generate the SBOM
-        uses: anchore/sbom-action@v0
+      #     # See https://github.com/marketplace/actions/anchore-sbom-action
+      # - name: Run syft to generate the SBOM
+      #   uses: anchore/sbom-action@v0
+      #   with:
+      #     path: .
+      #     output-file: "./sbom-build.spdx.json"
+      #     upload-artifact: true
+      #     upload-artifact-retention: 30
+         
+      # Use Trivy to generate the SBOM (syft's package names weren't correct)
+      # NOTE: this is using trivy ONLY for the SBOM, we could do the whole thing and generate a SARIF file and upload that
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
         with:
-          path: .
-          output-file: "./sbom-build.spdx.json"
-          upload-artifact: true
-          upload-artifact-retention: 30
-          
+          scan-type: 'fs'
+          format: 'github'
+          output: 'dependency-results.sbom.json'
+          image-ref: '.'
+          github-pat: ${{ secrets.GITHUB_TOKEN }}
+
+
           # See https://github.com/advanced-security/spdx-dependency-submission-action/blob/main/action.yml
       - name: SBOM upload 
         uses: advanced-security/spdx-dependency-submission-action@v0.0.1
