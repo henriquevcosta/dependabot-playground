@@ -68,12 +68,12 @@ jobs:
           github-pat: ${{ secrets.GITHUB_TOKEN }}
 
 
-          # See https://github.com/advanced-security/spdx-dependency-submission-action/blob/main/action.yml
-      - name: SBOM upload 
-        uses: advanced-security/spdx-dependency-submission-action@v0.0.1
-        with:
-          filePath: "."
-          filePattern: "*.spdx.json"
+      #     # See https://github.com/advanced-security/spdx-dependency-submission-action/blob/main/action.yml
+      # - name: SBOM upload 
+      #   uses: advanced-security/spdx-dependency-submission-action@v0.0.1
+      #   with:
+      #     filePath: "."
+      #     filePattern: "*.spdx.json"
   
 
       # - name: SBOM upload   
