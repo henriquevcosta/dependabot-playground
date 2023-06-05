@@ -3,6 +3,7 @@ name: "SBOM upload"
 on:
   push:
     branches: [ main ]
+  pull_request:
   # can add push and pull_request here 
 
 jobs:
@@ -58,6 +59,7 @@ jobs:
          
       # Use Trivy to generate the SBOM (syft's package names weren't correct)
       # NOTE: this is using trivy ONLY for the SBOM, we could do the whole thing and generate a SARIF file and upload that
+      #  https://github.com/aquasecurity/trivy-action
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
