@@ -69,27 +69,17 @@ jobs:
           image-ref: '.'
           github-pat: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          ignore-unfixed: true
+          output: 'trivy-results-fs.sarif'
+          severity: 'CRITICAL,HIGH'
+ 
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results-fs.sarif'
 
-      #     # See https://github.com/advanced-security/spdx-dependency-submission-action/blob/main/action.yml
-      # - name: SBOM upload 
-      #   uses: advanced-security/spdx-dependency-submission-action@v0.0.1
-      #   with:
-      #     filePath: "."
-      #     filePattern: "*.spdx.json"
-  
-
-      # - name: SBOM upload   
-      #   uses: advanced-security/spdx-dependency-submission-action@v0.0.1
-      #   with:
-      #     filePath: "./"
-      #     filePattern: "bom.json"
-      #     - name: Generate SBOM
-      #     run: | 
-      #       curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
-      #       chmod +x $RUNNER_TEMP/sbom-tool
-      #       $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn ${{ github.repository }} -pv 1.0.0 -ps OwnerName -nsb https://sbom.mycompany.com -V Verbose
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: sbom
-      #     path: _manifest/spdx_2.2
-          
