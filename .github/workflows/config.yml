@@ -76,6 +76,7 @@ jobs:
       ############################### Call on dependency review to get the diff from main ################
       ###### Get GitHub to analyse the diff in dependencies
       - name: 'Dependency Review'
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: actions/dependency-review-action@v3
 
       ############################### Save the SBOM to the build for manual analysis ################
