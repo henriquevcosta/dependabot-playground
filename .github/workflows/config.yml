@@ -78,6 +78,13 @@ jobs:
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v3
 
+      ############################### Save the SBOM to the build for manual analysis ################
+      ######
+      - uses: actions/upload-artifact@v3
+        with:
+          name: SBOM
+          path: "dependency-results.sbom.json"
+
 
       ############################### Vulnerability scanning ################
       ###### Different kind of scope, this is related to using vuln scanning outside of dependabot (can scan container images)
