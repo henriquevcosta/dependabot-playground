@@ -1,4 +1,4 @@
-name: "SBOM upload"
+name: "Security check"
 
 on:
   push:
@@ -25,23 +25,7 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
         
-              # Generate CycloneDX
-
-      # - name: Run gradlew cyclonedxBom task
-      #   uses: gradle/gradle-build-action@v2
-      #   with:
-      #     build-root-directory: .
-      #     arguments: cyclonedxBom
-
-      # - name: Upload application
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: cyclonesbom
-      #     path: ./bom.json
-      #     retention-days: 3
-  
-        # Generate gradle lockfile for syft to parse
-
+        # Generate gradle lockfile for syft/trivy to parse
       - name: Run gradlew task to generate the lockfile
         uses: gradle/gradle-build-action@v2
         with:
@@ -57,27 +41,55 @@ jobs:
       #     upload-artifact: true
       #     upload-artifact-retention: 30
          
+      ############################### Trivy Automatic submission to Dependency Submission API ################
+      ##### Notes: doesn't seem to be working well, at least dependency review isn't picking up differences
       # Use Trivy to generate the SBOM (syft's package names weren't correct)
       # NOTE: this is using trivy ONLY for the SBOM, we could do the whole thing and generate a SARIF file and upload that
       #  https://github.com/aquasecurity/trivy-action
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          format: 'github'
-          output: 'dependency-results.sbom.json'
-          image-ref: '.'
-          github-pat: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Trivy vulnerability scanner in fs mode
+      # - name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     scan-type: 'fs'
+      #     format: 'github'
+      #     output: 'dependency-results.sbom.json'
+      #     image-ref: '.'
+      #     github-pat: ${{ secrets.GITHUB_TOKEN }}
+      
+      ############################### Trivy explicit SBOM generation and submission ################
+      #####
+      - name: Run Trivy to produce SBOM
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
           scan-ref: '.'
-          ignore-unfixed: true
+          format: 'spdx-json'
+          output: 'dependency-results.sbom.json'
+          # image-ref: '.'
+     
+
+      - name: SBOM upload 
+        uses: advanced-security/spdx-dependency-submission-action@v0.0.1
+        with:
+          filePath: "."
+          filePattern: "dependency-results.sbom.json"
+
+      ############################### Call on dependency review to get the diff from main ################
+      ###### Get GitHub to analyse the diff in dependencies
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v3
+
+
+      ############################### Vulnerability scanning ################
+      ###### Different kind of scope, this is related to using vuln scanning outside of dependabot (can scan container images)
+      - name: Run Trivy vulnerability scanner to generate a SARIF
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          # ignore-unfixed: true
           output: 'trivy-results-fs.sarif'
           format: 'sarif'
-          severity: 'CRITICAL,HIGH'
+          # severity: 'CRITICAL,HIGH'
  
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
