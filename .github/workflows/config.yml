@@ -1,11 +1,20 @@
 name: "Security check"
 
 on:
+  workflow_dispatch:
+    inputs:
+      ignore-crowdstrike:
+        description: If true, images will be scanned for vulnerabilities using crowdstrike but the result not break the build
+        default: false
+        type: boolean
+        required: false
+      
   push:
     branches: [ main ]
   pull_request:
   # can add push and pull_request here 
-
+env:
+  CROWDSTRIKE_SCORE: ${{ github.event.inputs.ignore-crowdstrike && 9999 || 2000 }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,6 +41,14 @@ jobs:
           build-root-directory: .
           arguments: dependencies --write-locks
 
+
+      - name: The conditional step
+        if: ${{ !github.event.inputs.ignore-crowdstrike }}
+        run: echo "Ignore was false!"
+
+
+      - name: Running crowdstrike
+        run: 'echo "This is the value: $CROWDSTRIKE_SCORE and ${{ env.CROWDSTRIKE_SCORE}}"'
       #     # See https://github.com/marketplace/actions/anchore-sbom-action
       # - name: Run syft to generate the SBOM
       #   uses: anchore/sbom-action@v0
