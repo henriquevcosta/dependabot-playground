@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       ignore-crowdstrike:
-        description: If true, images will be scanned for vulnerabilities using crowdstrike but the result not break the build
+        description: "⚠️ Ignore Crowdstrike vulnerability alerts"
         default: false
         type: boolean
         required: false
@@ -34,6 +34,14 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
         
+      - name: The conditional step
+        if: ${{ !github.event.inputs.ignore-crowdstrike }}
+        run: echo "Ignore was false!"
+
+
+      - name: Running crowdstrike
+        run: 'echo "This is the value: $CROWDSTRIKE_SCORE and ${{ env.CROWDSTRIKE_SCORE}}"'
+      
         # Generate gradle lockfile for syft/trivy to parse
       - name: Run gradlew task to generate the lockfile
         uses: gradle/gradle-build-action@v2
@@ -42,13 +50,6 @@ jobs:
           arguments: dependencies --write-locks
 
 
-      - name: The conditional step
-        if: ${{ !github.event.inputs.ignore-crowdstrike }}
-        run: echo "Ignore was false!"
-
-
-      - name: Running crowdstrike
-        run: 'echo "This is the value: $CROWDSTRIKE_SCORE and ${{ env.CROWDSTRIKE_SCORE}}"'
       #     # See https://github.com/marketplace/actions/anchore-sbom-action
       # - name: Run syft to generate the SBOM
       #   uses: anchore/sbom-action@v0
