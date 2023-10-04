@@ -9,9 +9,9 @@ on:
         type: boolean
         required: false
       
-  push:
-    branches: [ main ]
-  pull_request:
+#  push:
+#    branches: [ main ]
+#  pull_request:
   # can add push and pull_request here 
 env:
   CROWDSTRIKE_SCORE: ${{ github.event.inputs.ignore-crowdstrike && 9999 || 2000 }}
