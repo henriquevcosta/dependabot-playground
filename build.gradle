@@ -30,7 +30,12 @@ dependencies {
 	implementation 'org.apache.commons:commons-text:1.8'
 	implementation 'org.apache.shiro:shiro-core:1.2.3'
 
+	// Introduce https://github.com/advisories/GHSA-rwhx-6hx7-pqc8
 	implementation 'org.jeecgframework.boot:jeecg-boot-common:3.5.3'
+
+	// Introduce Log4Shell!
+	implementation 'org.apache.logging.log4j:log4j-api:2.13.0'
+	implementation 'org.apache.logging.log4j:log4j-core:2.13.0'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
