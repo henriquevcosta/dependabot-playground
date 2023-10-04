@@ -31,8 +31,6 @@ dependencies {
 	implementation 'org.apache.shiro:shiro-core:1.2.3'
 
 
-	implementation group: 'org.jeecgframework.boot', name: 'jeecg-boot-common', version: '3.5.3'
-	
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
