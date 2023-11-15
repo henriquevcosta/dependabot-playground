@@ -1,9 +1,12 @@
 name: PR check
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
-
+  # can add push and pull_request here 
+  
 permissions:
   contents: write
   # Note that this permission will not be available if the PR is from a forked repository
@@ -39,5 +42,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Perform dependency review
+      if: github.event_name == 'pull_request'
       uses: actions/dependency-review-action@v3
       
