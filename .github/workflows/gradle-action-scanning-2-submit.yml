@@ -2,7 +2,7 @@ name: submit-dependency-snapshot
 
 on:
   workflow_run:
-    workflows: ['Generate Dependency Graph']
+    workflows: ['run-build-and-generate-dependency-snapshot']
     types: [completed]
 
 jobs:

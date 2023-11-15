@@ -1,4 +1,4 @@
-name: "Generate Dependency Graph"
+name: run-build-and-generate-dependency-snapshot
 
 on:
 
