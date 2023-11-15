@@ -40,8 +40,8 @@ jobs:
   dependency-review:
     needs: inspect_gradle_projects
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
     - name: Perform dependency review
-      if: github.event_name == 'pull_request'
       uses: actions/dependency-review-action@v3
       
