@@ -31,8 +31,8 @@ dependencies {
 	implementation 'org.apache.shiro:shiro-core:1.2.3'
 
 	// Introduce https://github.com/advisories/GHSA-rwhx-6hx7-pqc8
-	implementation group: 'org.jeecgframework.boot', name: 'jeecg-boot-common', version: '3.5.3'
-	implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.23.0'
+	// implementation group: 'org.jeecgframework.boot', name: 'jeecg-boot-common', version: '3.5.3'
+	// implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.23.0'
 
 	// Introduce Log4Shell!
 	// implementation 'org.apache.logging.log4j:log4j-api:2.13.0'
