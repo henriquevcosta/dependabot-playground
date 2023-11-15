@@ -34,15 +34,3 @@ jobs:
           dependency-graph: generate
           build-root-directory: .
           arguments: dependencies
-
-  # Must be a separate job because the dependency graph push only happens on post-build actions
-  dependency-review:
-    needs: inspect_gradle_projects
-    runs-on: ubuntu-latest
-    steps:
-      - name: Perform dependency review
-        if: github.event_name == 'pull_request'
-        uses: actions/dependency-review-action@v3
-        with:
-          comment-summary-in-pr: on-failure
-          license-check: false
