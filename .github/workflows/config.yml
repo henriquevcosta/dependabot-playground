@@ -2,9 +2,9 @@ name: PR check
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, gradle-56-main ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, gradle-56-main ]
   # can add push and pull_request here 
   
 permissions:
