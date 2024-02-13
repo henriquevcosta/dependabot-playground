@@ -1,8 +1,10 @@
 name: Simple actions check
 
 on:
-  push
-  
+  push:
+    branches:
+      - test-builds
+
 permissions:
   contents: write
   # Note that this permission will not be available if the PR is from a forked repository
