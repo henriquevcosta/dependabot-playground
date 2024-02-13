@@ -21,13 +21,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: run-action
-        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
-        run: cp ${{ inputs.working-dir }}/examples/run-tests-action.yml ./temp-run-tests-action.yml
+#      - name: run-action
+#        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
+#        run: cp ${{ inputs.working-dir }}/examples/run-tests-action.yml ./temp-run-tests-action.yml
+#
 
-
       - name: run-action
-        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
-        uses: ./temp-run-tests-action.yml
+        if: ${{ hashFiles(format('{0}/examples/action.yml', inputs.working-dir)) != '' }}
+#        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
+        uses: "${{ inputs.working-dir }}"
         with:
           image-registry: "${{ inputs.working-dir }}-cenas"
