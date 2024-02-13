@@ -5,6 +5,9 @@ on:
     branches:
       - test-builds
 
+  workflow_dispatch:
+
+
 permissions:
   contents: write
   # Note that this permission will not be available if the PR is from a forked repository
