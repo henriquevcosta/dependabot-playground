@@ -22,12 +22,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: run-action
-        if: ${{ hashFiles("inputs.working-dir/examples/run-tests-action.yml") != '' }}
+        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
         run: cp ${{ inputs.working-dir }}/examples/run-tests-action.yml ./temp-run-tests-action.yml
 
 
       - name: run-action
-        if: ${{ hashFiles("inputs.working-dir/examples/run-tests-action.yml") != '' }}
+        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
         uses: ./temp-run-tests-action.yml
         with:
           image-registry: "${{ inputs.working-dir }}-cenas"
