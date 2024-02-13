@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   call_wf:
-    uses: .github/workflows/called.yml@master
+    uses: ./.github/workflows/called.yml@master
     secrets: inherit
     with:
       working-dir: "./actions"
