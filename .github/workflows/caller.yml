@@ -1,9 +1,7 @@
 name: Simple actions check
 
 on:
-  push:
-    branches:
-      - *
+  push
   
 permissions:
   contents: write
