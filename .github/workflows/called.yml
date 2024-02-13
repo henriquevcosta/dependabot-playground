@@ -1,0 +1,28 @@
+name: Simple actions check
+
+on:
+  workflow_call:
+    inputs:
+      working-dir:
+        type: string
+        required: false
+        default: "./src"
+
+  # can add push and pull_request here 
+  
+permissions:
+  contents: write
+  # Note that this permission will not be available if the PR is from a forked repository
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: run-action
+        if: ${{ hashFiles("inputs.working-dir/examples/run-tests-action.yml") != '' }}
+        uses: ${{ inputs.working-dir }}/examples/run-tests-action.yml
+        with:
+          image-registry: "${{ inputs.working-dir }}-cenas"

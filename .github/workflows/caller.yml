@@ -1,0 +1,17 @@
+name: Simple actions check
+
+on:
+  push:
+    branches:
+      - *
+  
+permissions:
+  contents: write
+  # Note that this permission will not be available if the PR is from a forked repository
+
+jobs:
+  call_wf:
+    uses: .github/workflows/called.yml@master
+    secrets: inherit
+    with:
+      working-dir: "./actions"

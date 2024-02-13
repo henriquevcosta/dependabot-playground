@@ -1,0 +1,15 @@
+name: Run node 20 tests
+author: PPSE
+description: Run the tests to the node 20 image
+inputs:
+  image-registry:
+    description: The AWS region to authenticate into to access AWS ECR.
+    required: true
+    default: ap-southeast-2
+
+runs:
+  using: composite
+  steps:
+    - name: Test
+      run: echo "THE OUTPUT IS ${{ inputs.image-registry }}"
+
