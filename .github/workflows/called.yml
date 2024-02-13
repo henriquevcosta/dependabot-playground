@@ -23,6 +23,11 @@ jobs:
 
       - name: run-action
         if: ${{ hashFiles("inputs.working-dir/examples/run-tests-action.yml") != '' }}
-        uses: ${{ inputs.working-dir }}/examples/run-tests-action.yml
+        run: cp ${{ inputs.working-dir }}/examples/run-tests-action.yml ./temp-run-tests-action.yml
+
+
+      - name: run-action
+        if: ${{ hashFiles("inputs.working-dir/examples/run-tests-action.yml") != '' }}
+        uses: ./temp-run-tests-action.yml
         with:
           image-registry: "${{ inputs.working-dir }}-cenas"
