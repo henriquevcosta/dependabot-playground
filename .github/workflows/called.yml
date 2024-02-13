@@ -9,7 +9,10 @@ on:
         default: "./src"
 
   # can add push and pull_request here 
-  
+
+env:
+  ENV_VAR: "baaa-${{ inputs.working-dir }}-cccc"
+
 permissions:
   contents: write
   # Note that this permission will not be available if the PR is from a forked repository
@@ -31,4 +34,4 @@ jobs:
 #        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
         uses: ./tmp-action
         with:
-          image-registry: "${{ inputs.working-dir }}-cenas"
+          image-registry: "${{ env.ENV_VAR }}"
