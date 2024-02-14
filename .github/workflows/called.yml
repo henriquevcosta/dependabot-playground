@@ -36,3 +36,11 @@ jobs:
         with:
           image-registry: "${{ env.ENV_VAR }}"
           image-tag: "run"
+
+      - name: run-action-no-params
+        if: ${{ hashFiles(format('{0}/examples/action.yml', inputs.working-dir)) != '' }}
+#        if: ${{ hashFiles(format('{0}/examples/run-tests-action.yml', inputs.working-dir)) != '' }}
+        uses: ./tmp-action
+        with:
+          image-registry: "${{ env.ENV_VAR }}"
+          image-tag: ""
