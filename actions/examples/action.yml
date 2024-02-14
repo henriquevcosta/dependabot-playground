@@ -16,5 +16,5 @@ runs:
       run: echo "image-date-str=$(date +%Y%m%d%H%M%S)" >> "${GITHUB_OUTPUT}"
     - name: Test
       shell: bash
-      run: echo "THE OUTPUT IS ${{ inputs.image-registry }} - ${{ steps.generate-build-nr.output.image-date-str }}"
+      run: echo "THE OUTPUT IS ${{ inputs.image-registry }} - ${{ steps.generate-build-nr.outputs.image-date-str }}"
 
