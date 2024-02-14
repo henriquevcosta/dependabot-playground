@@ -27,8 +27,14 @@ runs:
         echo "image-build-tag=${TAG_WITH_DASH}${BUILD_TS}" >> "${GITHUB_OUTPUT}"
     - name: Test
       shell: bash
+      env:
+        DESIRED_TAG: "${{ inputs.image-tag }}"
       run: |
         echo "THE OUTPUT IS ${{ inputs.image-registry }}"
         echo "date str ${{ steps.generate-build-nr.outputs.image-build }}"
         echo "date tag str ${{ steps.generate-build-nr.outputs.image-build-tag }}"
+        [ -n "${DESIRED_TAG}" ] && {
+          echo "docker tag"
+          echo "docker push"
+        }
 
