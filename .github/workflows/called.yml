@@ -35,3 +35,4 @@ jobs:
         uses: ./tmp-action
         with:
           image-registry: "${{ env.ENV_VAR }}"
+          image-tag: "run"

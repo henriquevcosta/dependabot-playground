@@ -6,6 +6,11 @@ inputs:
     description: The AWS region to authenticate into to access AWS ECR.
     required: true
     default: ap-southeast-2
+  image-tag:
+    description: The AWS region to authenticate into to access AWS ECR.
+    required: false
+    default: ""
+    type: string
 
 runs:
   using: composite
@@ -13,8 +18,17 @@ runs:
     - name: generate-build-nr
       id: generate-build-nr
       shell: bash
-      run: echo "image-date-str=$(date +%Y%m%d%H%M%S)" >> "${GITHUB_OUTPUT}"
+      run: |
+        export BUILD_TS=$(date +%Y%m%d%H%M%S)
+        echo "image-build=${BUILD_TS}" >> "${GITHUB_OUTPUT}"
+        export BASE_TAG="${{ inputs.image-tag }}"
+        # If we were given a tag, prepare a variable which has "tag-" to prefix the build str
+        export TAG_WITH_DASH="${BASE_TAG:+BASE_TAG-}
+        echo "image-build-tag=${TAG_WITH_DASH}${BUILD_TS}" >> "${GITHUB_OUTPUT}"
     - name: Test
       shell: bash
-      run: echo "THE OUTPUT IS ${{ inputs.image-registry }} - ${{ steps.generate-build-nr.outputs.image-date-str }}"
+      run: |
+        echo "THE OUTPUT IS ${{ inputs.image-registry }}"
+        echo "date str ${{ steps.generate-build-nr.outputs.image-build }}"
+        echo "date tag str ${{ steps.generate-build-nr.outputs.image-build-tag }}"
 
