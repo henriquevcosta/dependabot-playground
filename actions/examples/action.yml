@@ -23,7 +23,7 @@ runs:
         echo "image-build=${BUILD_TS}" >> "${GITHUB_OUTPUT}"
         export BASE_TAG="${{ inputs.image-tag }}"
         # If we were given a tag, prepare a variable which has "tag-" to prefix the build str
-        export TAG_WITH_DASH="${BASE_TAG:+BASE_TAG-}
+        export TAG_WITH_DASH="${BASE_TAG:+BASE_TAG-}"
         echo "image-build-tag=${TAG_WITH_DASH}${BUILD_TS}" >> "${GITHUB_OUTPUT}"
     - name: Test
       shell: bash
