@@ -11,6 +11,7 @@ runs:
   using: composite
   steps:
     - name: generate-build-nr
+      id: generate-build-nr
       shell: bash
       run: echo "image-date-str=$(date +%Y%m%d%H%M%S)" >> "${GITHUB_OUTPUT}"
     - name: Test
