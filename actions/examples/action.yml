@@ -33,8 +33,8 @@ runs:
         echo "THE OUTPUT IS ${{ inputs.image-registry }}"
         echo "date str ${{ steps.generate-build-nr.outputs.image-build }}"
         echo "date tag str ${{ steps.generate-build-nr.outputs.image-build-tag }}"
-        [ -n "${DESIRED_TAG}" ] && {
-          echo "docker tag"
-          echo "docker push"
+        [ -z "${DESIRED_TAG}" ] || {
+          echo "docker tag";
+          echo "docker push";
         }
 
