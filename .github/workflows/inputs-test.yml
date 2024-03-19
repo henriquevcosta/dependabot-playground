@@ -1,0 +1,40 @@
+name: playground test
+
+on:
+  push:
+  pull_request:
+
+  workflow_call:
+    inputs:
+      maven_version:
+        description: The Maven version to install
+        required: false
+        default: 3.9.6
+        type: string
+      java_version:
+        description: The Java version to use to build the project
+        required: false
+        default: 21
+        type: string
+
+  workflow_dispatch:
+    inputs:
+      maven_version:
+        description: The Maven version to install
+        required: false
+        default: 3.9.6
+        type: string
+      java_version:
+        description: The Java version to use to build the project
+        required: false
+        default: 21
+        type: string
+
+env:
+  maven_version: ${{ inputs.maven_version &&  inputs.maven_version || 'potato' }}
+
+jobs:
+  cenas:
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo ${{ env.maven_version }}"
