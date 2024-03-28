@@ -11,7 +11,7 @@ jobs:
   test-if-or-condition:
     runs-on: ubuntu-latest
     steps:
-      - run: "echo Current ref is: ${{ github.ref }}  and equality test result is ${{ github.ref == ('refs/heads/develop' || 'refs/heads/teste-if-or' || 'pull_request') }}"
+      - run: "echo Current ref is: ${{ github.ref }}. The OR is evaluated to  ${{ ('refs/heads/develop' || 'refs/heads/teste-if-or' || 'pull_request') }}  and equality test result is ${{ github.ref == ('refs/heads/develop' || 'refs/heads/teste-if-or' || 'pull_request') }}"
       
       - run: "echo It worked"
         if: github.ref == ('refs/heads/develop' || 'refs/heads/teste-if-or' || 'pull_request')
